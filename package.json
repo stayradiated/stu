@@ -1,0 +1,27 @@
+{
+  "name": "stu",
+  "version": "0.0.1",
+  "description": "Stub dependencies when testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec --compilers js:babel/register tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stayradiated/mock.git"
+  },
+  "keywords": [
+    "mock",
+    "automock",
+    "inject",
+    "require",
+    "sinon",
+    "test"
+  ],
+  "author": "George Czabania <george@czabania.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stayradiated/mock/issues"
+  },
+  "homepage": "https://github.com/stayradiated/mock#readme"
+}
