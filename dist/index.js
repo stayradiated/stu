@@ -5,8 +5,8 @@ Object.defineProperty(exports, '__esModule', {
 });
 exports['default'] = mock;
 exports.flush = flush;
-var unwire = require('../unwire/lib/unwire');
-var caller = require('../unwire/lib/caller');
+var unwire = require('unwire/dist/unwire');
+var caller = require('unwire/dist/caller');
 var sinon = require('sinon');
 
 function mock(module) {
