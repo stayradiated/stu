@@ -1,5 +1,5 @@
-const unwire = require('../unwire/lib/unwire');
-const caller = require('../unwire/lib/caller');
+const unwire = require('unwire/dist/unwire');
+const caller = require('unwire/dist/caller');
 const sinon = require('sinon');
 
 export default function mock (module) {

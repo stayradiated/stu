@@ -2,9 +2,10 @@
   "name": "stu",
   "version": "0.0.1",
   "description": "Stub dependencies when testing",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -R spec --compilers js:babel/register tests/test.js"
+    "test": "mocha -R spec --compilers js:babel/register test/test.js",
+    "build": "babel src --out-dir dist"
   },
   "repository": {
     "type": "git",
@@ -23,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/stayradiated/mock/issues"
   },
-  "homepage": "https://github.com/stayradiated/mock#readme"
+  "homepage": "https://github.com/stayradiated/mock#readme",
+  "devDependencies": {
+    "babel": "^5.8.0",
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "sinon": "^1.17.2",
+    "unwire": "^1.0.2"
+  }
 }

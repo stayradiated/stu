@@ -1,6 +1,6 @@
 var assert = require('assert');
-var mock = require('../index').default;
-var flush = require('../index').flush;
+var mock = require('../src').default;
+var flush = require('../src').flush;
 
 describe('square', function () {
   var multiply;
