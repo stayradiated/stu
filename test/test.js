@@ -1,19 +1,20 @@
-var assert = require('assert');
-var mock = require('../src').default;
-var flush = require('../src').flush;
+import assert from 'assert';
+import stu from '../src/index';
 
 describe('square', function () {
+  var cleanup;
+
   var multiply;
   var square;
 
   beforeEach(function () {
-    multiply = mock('./multiply');
-    square = require('./square');
+    cleanup = stu(function (mock, test) {
+      multiply = mock('./multiply');
+      square = test('./square');
+    });
   });
 
-  afterEach(function () {
-    flush('./square');
-  });
+  after(() => cleanup());
 
   it('should square 5', function () {
     multiply.returns(25);

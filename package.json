@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "sinon": "^1.17.2",
-    "unwire": "^1.0.2"
+    "unwire": "^1.0.4"
   }
 }
