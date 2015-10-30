@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stayradiated/mock.git"
+    "url": "git+https://github.com/stayradiated/stu.git"
   },
   "keywords": [
     "mock",
@@ -22,9 +22,9 @@
   "author": "George Czabania <george@czabania.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stayradiated/mock/issues"
+    "url": "https://github.com/stayradiated/stu/issues"
   },
-  "homepage": "https://github.com/stayradiated/mock#readme",
+  "homepage": "https://github.com/stayradiated/stu#readme",
   "devDependencies": {
     "babel": "^5.8.0",
     "mocha": "^2.3.3"
