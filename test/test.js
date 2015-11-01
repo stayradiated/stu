@@ -6,11 +6,16 @@ describe('square', function () {
 
   var multiply;
   var square;
+  var Car;
+  var drive;
 
   beforeEach(function () {
     cleanup = stu(function (mock, test) {
       multiply = mock('./multiply');
       square = test('./square');
+
+      Car = mock('./car'); 
+      drive = test('./drive');
     });
   });
 
@@ -33,4 +38,10 @@ describe('square', function () {
     assert(multiply.calledWith(3, 3));
     assert(multiply.calledOnce);
   });
+
+  it('should drive a car', function () {
+    Car.prototype.drive.returns('123');
+    assert.equal(drive(), '123');
+  });
+
 });

@@ -3,6 +3,9 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 exports.mockModule = mockModule;
 exports.cleanup = cleanup;
 exports['default'] = stu;
@@ -20,11 +23,20 @@ var _sinon = require('sinon');
 var _sinon2 = _interopRequireDefault(_sinon);
 
 function mockModule(module) {
+  var mock = undefined;
   if (typeof module === 'function') {
-    return _sinon2['default'].stub();
+    mock = _sinon2['default'].stub();
+    var props = Object.getOwnPropertyNames(module.prototype);
+    for (var i = 0, len = props.length; i < len; i++) {
+      var key = props[i];
+      if (key !== 'constructor') {
+        mock.prototype[key] = _sinon2['default'].stub();
+      }
+    }
   } else {
-    return _sinon2['default'].stub(module);
+    mock = _sinon2['default'].stub(_extends({}, module));
   }
+  return mock;
 }
 
 function cleanup(modules, context) {

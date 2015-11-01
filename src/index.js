@@ -3,11 +3,20 @@ import caller from 'unwire/dist/caller';
 import sinon from 'sinon';
 
 export function mockModule (module) {
+  let mock;
   if (typeof module === 'function') {
-    return sinon.stub();
+    mock = sinon.stub();
+    const props = Object.getOwnPropertyNames(module.prototype);
+    for (let i = 0, len = props.length; i < len; i++) {
+      let key = props[i];
+      if (key !== 'constructor') {
+        mock.prototype[key] = sinon.stub();
+      }
+    }
   } else {
-    return sinon.stub(module);
+    mock = sinon.stub({...module});
   }
+  return mock;
 }
 
 export function cleanup (modules, context) {
@@ -31,7 +40,7 @@ export default function stu (fn) {
     return require(fullPath);
   }
 
-  var result = fn(mock, test);
+  const result = fn(mock, test);
 
   // remove all required modules from cache
   cleanup(required, context);
