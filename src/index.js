@@ -37,6 +37,8 @@ export default function stu (fn) {
   const test = function (module) {
     required.push(module);
     const fullPath = getFullPath(module, context);
+
+    flush(module, context);
     return require(fullPath);
   }
 
