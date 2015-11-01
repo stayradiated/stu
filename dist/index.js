@@ -59,6 +59,8 @@ function stu(fn) {
   var test = function test(module) {
     required.push(module);
     var fullPath = (0, _unwireDistUnwire.getFullPath)(module, context);
+
+    (0, _unwireDistUnwire.flush)(module, context);
     return require(fullPath);
   };
 
