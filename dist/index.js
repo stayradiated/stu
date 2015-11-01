@@ -66,8 +66,5 @@ function stu(fn) {
 
   var result = fn(mock, test);
 
-  // remove all required modules from cache
-  cleanup(required, context);
-
-  return cleanup.bind(null, mocked, context);
+  return cleanup.bind(null, [].concat(mocked, required), context);
 }

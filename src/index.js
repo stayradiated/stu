@@ -44,8 +44,5 @@ export default function stu (fn) {
 
   const result = fn(mock, test);
 
-  // remove all required modules from cache
-  cleanup(required, context);
-
-  return cleanup.bind(null, mocked, context);
+  return cleanup.bind(null, [...mocked, ...required], context);
 }
