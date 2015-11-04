@@ -3,9 +3,8 @@
 Object.defineProperty(exports, '__esModule', {
   value: true
 });
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
+exports.mockFunction = mockFunction;
+exports.mockObject = mockObject;
 exports.mockModule = mockModule;
 exports.cleanup = cleanup;
 exports['default'] = stu;
@@ -22,19 +21,40 @@ var _sinon = require('sinon');
 
 var _sinon2 = _interopRequireDefault(_sinon);
 
-function mockModule(module) {
-  var mock = undefined;
-  if (typeof module === 'function') {
-    mock = _sinon2['default'].stub();
-    var props = Object.getOwnPropertyNames(module.prototype);
+function mockFunction(fn) {
+  var mock = _sinon2['default'].stub();
+  if (fn.hasOwnProperty('prototype')) {
+    var props = Object.getOwnPropertyNames(fn.prototype);
     for (var i = 0, len = props.length; i < len; i++) {
       var key = props[i];
       if (key !== 'constructor') {
         mock.prototype[key] = _sinon2['default'].stub();
       }
     }
+  }
+  return mock;
+}
+
+function mockObject(obj) {
+  var mock = _sinon2['default'].stub();
+  var props = Object.getOwnPropertyNames(obj);
+  for (var i = 0, len = props.length; i < len; i++) {
+    var key = props[i];
+    if (typeof obj[key] === 'function') {
+      mock[key] = mockFunction(obj[key]);
+    } else {
+      mock[key] = obj;
+    }
+  }
+  return mock;
+}
+
+function mockModule(module) {
+  var mock = undefined;
+  if (typeof module === 'function') {
+    mock = mockFunction(module);
   } else {
-    mock = _sinon2['default'].stub(_extends({}, module));
+    mock = mockObject(module);
   }
   return mock;
 }

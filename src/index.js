@@ -2,19 +2,40 @@ import {getFullPath, unwire, flush} from 'unwire/dist/unwire';
 import caller from 'unwire/dist/caller';
 import sinon from 'sinon';
 
-export function mockModule (module) {
-  let mock;
-  if (typeof module === 'function') {
-    mock = sinon.stub();
-    const props = Object.getOwnPropertyNames(module.prototype);
+export function mockFunction (fn) {
+  let mock = sinon.stub();
+  if (fn.hasOwnProperty('prototype')) {
+    const props = Object.getOwnPropertyNames(fn.prototype);
     for (let i = 0, len = props.length; i < len; i++) {
       let key = props[i];
       if (key !== 'constructor') {
         mock.prototype[key] = sinon.stub();
       }
     }
+  }
+  return mock;
+}
+
+export function mockObject (obj) {
+  let mock = sinon.stub();
+  const props = Object.getOwnPropertyNames(obj);
+  for (let i = 0, len = props.length; i < len; i++) {
+    let key = props[i];
+    if (typeof obj[key] === 'function') {
+      mock[key] = mockFunction(obj[key]);
+    } else {
+      mock[key] = obj;
+    }
+  }
+  return mock;
+}
+
+export function mockModule (module) {
+  let mock;
+  if (typeof module === 'function') {
+    mock = mockFunction(module);
   } else {
-    mock = sinon.stub({...module});
+    mock = mockObject(module);
   }
   return mock;
 }
