@@ -14,33 +14,28 @@ npm install --save-dev stu
 
 ## Usage
 
-```
+``` javascript
 import stu from 'stu';
-import {expect} from 'chai';
+import expect from 'expect';
 
 describe('something', () => {
-  let cleanup;
-
   let thing;
   let stuff;
 
-  beforeEach(() => {
-    cleanup = stu((mock, require) => {
-      thing = mock('../thing');
-      stuff = test('../stuff');
-    });
+  const modules = stu((mock, test) => {
+    thing = mock('../thing');
+    stuff = test('../stuff');
   });
 
-  after(() => cleanup());
+  beforeEach(modules.mock);
+  after(modules.flush);
 
   it('should do stuff with thing', () => {
     stuff.returns(true);
 
     thing();
 
-    expect(stuff.args).to.deep.equal([
-      ['a', 'b', 'c'],
-    ]);
+    expect(stuff.args).toEqual([['a', 'b', 'c']]);
   });
 
 });

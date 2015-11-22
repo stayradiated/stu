@@ -30,7 +30,13 @@
     "mocha": "^2.3.3"
   },
   "dependencies": {
+    "caller": "^1.0.1",
     "sinon": "^1.17.2",
-    "unwire": "^1.0.4"
+    "unwire": "^2.0.0"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ]
   }
 }

@@ -1,6 +1,6 @@
-import Car from './car';
+import Car from './car'
 
 export default function drive () {
-  var car = new Car();
-  return car.drive();
+  var car = new Car()
+  return car.drive()
 }
