@@ -1,13 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', {
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports['default'] = stu;
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+exports.default = stu;
 
 var _caller = require('caller');
 
@@ -17,8 +13,12 @@ var _core = require('./core');
 
 var _unwire = require('unwire');
 
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function stu(fn) {
-  var context = (0, _caller2['default'])();
+  var context = (0, _caller2.default)();
   var modulePaths = new Set();
 
   return {
@@ -34,5 +34,3 @@ function stu(fn) {
     }
   };
 }
-
-module.exports = exports['default'];

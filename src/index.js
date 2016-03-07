@@ -16,6 +16,6 @@ export default function stu (fn) {
       modulePaths.forEach((modulePath) => {
         return flushWithContext(modulePath, context)
       })
-    }
+    },
   }
 }

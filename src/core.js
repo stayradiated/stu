@@ -1,5 +1,9 @@
-import {unwireWithContext, flushWithContext} from 'unwire'
 import sinon from 'sinon'
+import {
+  replaceWithContext,
+  unwireWithContext,
+  flushWithContext,
+} from 'unwire'
 
 export function mockFunction (fn) {
   let mock = sinon.stub()
@@ -39,16 +43,25 @@ export function mockModule (module) {
   return mock
 }
 
-export function mockModulePath (modulePath, context) {
-  return unwireWithContext(modulePath, context, mockModule)
+export function mockModulePath (modulePath, context, options = {}) {
+  const mock = options.mock != null ? options.mock : mockModule
+  return unwireWithContext(modulePath, context, mock)
+}
+
+export function replaceModulePath (modulePath, context, options = {}) {
+  const value = options.mock != null ? options.mock() : {}
+  return replaceWithContext(modulePath, context, value)
 }
 
 export function mock (fn, context) {
   const modulePaths = new Set()
 
-  const mock = function (modulePath) {
+  const mock = function (modulePath, options = {}) {
     modulePaths.add(modulePath)
-    return mockModulePath(modulePath, context)
+    if (options.replace) {
+      return replaceModulePath(modulePath, context, options)
+    }
+    return mockModulePath(modulePath, context, options)
   }
 
   const test = function (modulePath) {
@@ -63,5 +76,5 @@ export function mock (fn, context) {
 }
 
 export function cleanup (modules, context) {
-  modules.forEach(module => flushWithContext(module, context))
+  modules.forEach((module) => flushWithContext(module, context))
 }
