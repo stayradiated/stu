@@ -27,7 +27,7 @@ export function mockObject (obj) {
     if (typeof obj[key] === 'function') {
       mock[key] = mockFunction(obj[key])
     } else {
-      mock[key] = obj
+      mock[key] = obj[key]
     }
   }
   return mock

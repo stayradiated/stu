@@ -7,6 +7,7 @@ describe('square', () => {
   let square
   let Car
   let drive
+  let abc
 
   const modules = stu((mock, test) => {
     multiply = mock('./multiply').default
@@ -14,6 +15,8 @@ describe('square', () => {
 
     Car = mock('./car').default
     drive = test('./drive').default
+
+    abc = mock('./abc')
   })
 
   beforeEach(modules.mock)
@@ -40,5 +43,17 @@ describe('square', () => {
   it('should drive a car', () => {
     Car.prototype.drive.returns('123')
     assert.equal(drive(), '123')
+  })
+
+  it('should not touch properties', () => {
+    assert.equal(abc.number, 1)
+    assert.equal(abc.bool, true)
+    assert.equal(abc.string, 'string')
+
+    abc.number = 2
+    assert.equal(abc.number, 2)
+    modules.flush()
+    modules.mock()
+    assert.equal(abc.number, 1)
   })
 })
