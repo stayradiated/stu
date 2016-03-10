@@ -5,12 +5,26 @@ import {
   flushWithContext,
 } from 'unwire'
 
+const DEFAULT_FN_PROPS = [
+  'length', 'name', 'arguments', 'caller', 'prototype',
+]
+
+export function getObjectKeys (obj) {
+  return Object.getOwnPropertyNames(obj)
+}
+
+export function getFunctionKeys (fn) {
+  return getObjectKeys(fn).filter((value) => {
+    return DEFAULT_FN_PROPS.indexOf(value) < 0
+  })
+}
+
 export function mockFunction (fn) {
-  let mock = sinon.stub()
+  const mock = mockObject(fn, getFunctionKeys(fn), sinon.stub())
   if (fn.hasOwnProperty('prototype')) {
-    const props = Object.getOwnPropertyNames(fn.prototype)
-    for (let i = 0, len = props.length; i < len; i++) {
-      let key = props[i]
+    const keys = getObjectKeys(fn.prototype)
+    for (let i = 0, len = keys.length; i < len; i++) {
+      let key = keys[i]
       if (key !== 'constructor') {
         mock.prototype[key] = sinon.stub()
       }
@@ -19,15 +33,16 @@ export function mockFunction (fn) {
   return mock
 }
 
-export function mockObject (obj) {
-  let mock = sinon.stub()
-  const props = Object.getOwnPropertyNames(obj)
-  for (let i = 0, len = props.length; i < len; i++) {
-    let key = props[i]
-    if (typeof obj[key] === 'function') {
-      mock[key] = mockFunction(obj[key])
+export function mockObject (obj, keys, mock = {}) {
+  for (let i = 0, len = keys.length; i < len; i++) {
+    let key = keys[i]
+    let val = obj[key]
+    if (typeof val === 'function') {
+      mock[key] = mockFunction(val)
+    } else if (typeof val === 'object' && val !== null) {
+      mock[key] = mockObject(val, getObjectKeys(val))
     } else {
-      mock[key] = obj[key]
+      mock[key] = val
     }
   }
   return mock
@@ -38,7 +53,7 @@ export function mockModule (module) {
   if (typeof module === 'function') {
     mock = mockFunction(module)
   } else {
-    mock = mockObject(module)
+    mock = mockObject(module, getObjectKeys(module))
   }
   return mock
 }

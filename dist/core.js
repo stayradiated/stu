@@ -3,6 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+exports.getObjectKeys = getObjectKeys;
+exports.getFunctionKeys = getFunctionKeys;
 exports.mockFunction = mockFunction;
 exports.mockObject = mockObject;
 exports.mockModule = mockModule;
@@ -19,12 +24,24 @@ var _unwire = require('unwire');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var DEFAULT_FN_PROPS = ['length', 'name', 'arguments', 'caller', 'prototype'];
+
+function getObjectKeys(obj) {
+  return Object.getOwnPropertyNames(obj);
+}
+
+function getFunctionKeys(fn) {
+  return getObjectKeys(fn).filter(function (value) {
+    return DEFAULT_FN_PROPS.indexOf(value) < 0;
+  });
+}
+
 function mockFunction(fn) {
-  var mock = _sinon2.default.stub();
+  var mock = mockObject(fn, getFunctionKeys(fn), _sinon2.default.stub());
   if (fn.hasOwnProperty('prototype')) {
-    var props = Object.getOwnPropertyNames(fn.prototype);
-    for (var i = 0, len = props.length; i < len; i++) {
-      var key = props[i];
+    var keys = getObjectKeys(fn.prototype);
+    for (var i = 0, len = keys.length; i < len; i++) {
+      var key = keys[i];
       if (key !== 'constructor') {
         mock.prototype[key] = _sinon2.default.stub();
       }
@@ -33,15 +50,18 @@ function mockFunction(fn) {
   return mock;
 }
 
-function mockObject(obj) {
-  var mock = _sinon2.default.stub();
-  var props = Object.getOwnPropertyNames(obj);
-  for (var i = 0, len = props.length; i < len; i++) {
-    var key = props[i];
-    if (typeof obj[key] === 'function') {
-      mock[key] = mockFunction(obj[key]);
+function mockObject(obj, keys) {
+  var mock = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+  for (var i = 0, len = keys.length; i < len; i++) {
+    var key = keys[i];
+    var val = obj[key];
+    if (typeof val === 'function') {
+      mock[key] = mockFunction(val);
+    } else if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null) {
+      mock[key] = mockObject(val, getObjectKeys(val));
     } else {
-      mock[key] = obj[key];
+      mock[key] = val;
     }
   }
   return mock;
@@ -52,7 +72,7 @@ function mockModule(module) {
   if (typeof module === 'function') {
     mock = mockFunction(module);
   } else {
-    mock = mockObject(module);
+    mock = mockObject(module, getObjectKeys(module));
   }
   return mock;
 }

@@ -1,5 +1,5 @@
 import assert from 'assert'
-import stu from '../src/index'
+import stu from '../../src/index'
 import {describe, it, beforeEach, after} from 'mocha'
 
 describe('square', () => {
