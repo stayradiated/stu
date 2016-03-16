@@ -19,23 +19,23 @@ import stu from 'stu';
 import expect from 'expect';
 
 describe('something', () => {
-  let thing;
-  let stuff;
+  let library;
+  let mycode;
 
   const modules = stu((mock, test) => {
-    thing = mock('../thing');
-    stuff = test('../stuff');
+    library = mock('library');
+    mycode = test('../mycode');
   });
 
   beforeEach(modules.mock);
   after(modules.flush);
 
   it('should do stuff with thing', () => {
-    stuff.returns(true);
+    library.returns('some value');
 
-    thing();
+    mycode();
 
-    expect(stuff.args).toEqual([['a', 'b', 'c']]);
+    expect(library.args).toEqual([['a', 'b', 'c']]);
   });
 
 });
