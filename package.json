@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha --recursive -R spec --compilers js:babel-register test",
-    "build": "babel src --out-dir dist",
+    "build": "rm -rf dist && babel src --out-dir dist",
     "prepublish": "npm run build"
   },
   "repository": {
@@ -36,7 +36,7 @@
   "dependencies": {
     "caller": "^1.0.1",
     "sinon": "^1.17.3",
-    "unwire": "^2.2.1"
+    "unwire": "^2.2.2"
   },
   "babel": {
     "presets": [
