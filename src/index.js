@@ -6,7 +6,7 @@ export default function stu (fn) {
   const context = caller()
   let modulePaths = new Set()
 
-  return {
+  const exports = {
     mock: () => {
       const result = mock(fn, context)
       modulePaths = new Set([...modulePaths, ...result.modulePaths])
@@ -17,5 +17,11 @@ export default function stu (fn) {
         return flushWithContext(modulePath, context)
       })
     },
+    mocha: () => {
+      after(exports.flush)
+      beforeEach(exports.mock)
+    },
   }
+
+  return exports
 }

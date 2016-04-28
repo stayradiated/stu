@@ -22,13 +22,10 @@ describe('something', () => {
   let library;
   let mycode;
 
-  const modules = stu((mock, test) => {
+  stu((mock, test) => {
     library = mock('library');
     mycode = test('../mycode');
-  });
-
-  beforeEach(modules.mock);
-  after(modules.flush);
+  }).mocha();
 
   it('should do stuff with thing', () => {
     library.returns('some value');
@@ -37,6 +34,5 @@ describe('something', () => {
 
     expect(library.args).toEqual([['a', 'b', 'c']]);
   });
-
 });
 ```

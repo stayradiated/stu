@@ -21,7 +21,7 @@ function stu(fn) {
   var context = (0, _caller2.default)();
   var modulePaths = new Set();
 
-  return {
+  var exports = {
     mock: function mock() {
       var result = (0, _core.mock)(fn, context);
       modulePaths = new Set([].concat(_toConsumableArray(modulePaths), _toConsumableArray(result.modulePaths)));
@@ -31,6 +31,12 @@ function stu(fn) {
       modulePaths.forEach(function (modulePath) {
         return (0, _unwire.flushWithContext)(modulePath, context);
       });
+    },
+    mocha: function mocha() {
+      after(exports.flush);
+      beforeEach(exports.mock);
     }
   };
+
+  return exports;
 }
