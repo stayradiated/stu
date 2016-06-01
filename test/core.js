@@ -50,5 +50,23 @@ describe('core', () => {
       expect(mocked.obj.fn2.isSinonProxy).toBe(true)
       expect(mocked.ignore).toBe(undefined)
     })
+
+    it('should mock circular references', () => {
+      function Circular () {
+        this.self = this
+        this.name = 'test'
+      }
+
+      const circular = new Circular()
+
+      const mocked = core.mockObject(circular, ['name', 'self'])
+      expect(mocked).toEqual({
+        name: 'test',
+        self: {
+          name: 'test',
+          self: null,
+        },
+      })
+    })
   })
 })

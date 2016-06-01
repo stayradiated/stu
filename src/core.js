@@ -19,8 +19,11 @@ export function getFunctionKeys (fn) {
   })
 }
 
-export function mockFunction (fn) {
-  const mock = mockObject(fn, getFunctionKeys(fn), sinon.stub())
+export function mockFunction (fn, cache) {
+  const mock = Object.assign(
+    sinon.stub(),
+    mockObject(fn, getFunctionKeys(fn), cache))
+
   if (fn.hasOwnProperty('prototype')) {
     const keys = getObjectKeys(fn.prototype)
     for (let i = 0, len = keys.length; i < len; i++) {
@@ -33,27 +36,38 @@ export function mockFunction (fn) {
   return mock
 }
 
-export function mockObject (obj, keys, mock = {}) {
-  for (let i = 0, len = keys.length; i < len; i++) {
-    let key = keys[i]
-    let val = obj[key]
-    if (typeof val === 'function') {
-      mock[key] = mockFunction(val)
+export function mockObject (obj, keys, cache = new WeakMap()) {
+  const mock = {}
+  keys.forEach((key) => {
+    const val = obj[key]
+
+    let mockVal
+    if (cache.has(val)) {
+      mockVal = cache.get(val)
+    } else if (typeof val === 'function') {
+      cache.set(val, null)
+      mockVal = mockFunction(val, cache)
+      cache.set(val, mockVal)
     } else if (typeof val === 'object' && val !== null) {
-      mock[key] = mockObject(val, getObjectKeys(val))
+      cache.set(val, null)
+      mockVal = mockObject(val, getObjectKeys(val), cache)
+      cache.set(val, mockVal)
     } else {
-      mock[key] = val
+      mockVal = val
     }
-  }
+
+    mock[key] = mockVal
+  })
   return mock
 }
 
 export function mockModule (module) {
+  const cache = new WeakMap()
   let mock
   if (typeof module === 'function') {
-    mock = mockFunction(module)
+    mock = mockFunction(module, cache)
   } else {
-    mock = mockObject(module, getObjectKeys(module))
+    mock = mockObject(module, getObjectKeys(module), cache)
   }
   return mock
 }

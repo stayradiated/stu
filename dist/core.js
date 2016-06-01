@@ -36,8 +36,9 @@ function getFunctionKeys(fn) {
   });
 }
 
-function mockFunction(fn) {
-  var mock = mockObject(fn, getFunctionKeys(fn), _sinon2.default.stub());
+function mockFunction(fn, cache) {
+  var mock = Object.assign(_sinon2.default.stub(), mockObject(fn, getFunctionKeys(fn), cache));
+
   if (fn.hasOwnProperty('prototype')) {
     var keys = getObjectKeys(fn.prototype);
     for (var i = 0, len = keys.length; i < len; i++) {
@@ -51,28 +52,39 @@ function mockFunction(fn) {
 }
 
 function mockObject(obj, keys) {
-  var mock = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+  var cache = arguments.length <= 2 || arguments[2] === undefined ? new WeakMap() : arguments[2];
 
-  for (var i = 0, len = keys.length; i < len; i++) {
-    var key = keys[i];
+  var mock = {};
+  keys.forEach(function (key) {
     var val = obj[key];
-    if (typeof val === 'function') {
-      mock[key] = mockFunction(val);
+
+    var mockVal = void 0;
+    if (cache.has(val)) {
+      mockVal = cache.get(val);
+    } else if (typeof val === 'function') {
+      cache.set(val, null);
+      mockVal = mockFunction(val, cache);
+      cache.set(val, mockVal);
     } else if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object' && val !== null) {
-      mock[key] = mockObject(val, getObjectKeys(val));
+      cache.set(val, null);
+      mockVal = mockObject(val, getObjectKeys(val), cache);
+      cache.set(val, mockVal);
     } else {
-      mock[key] = val;
+      mockVal = val;
     }
-  }
+
+    mock[key] = mockVal;
+  });
   return mock;
 }
 
 function mockModule(module) {
+  var cache = new WeakMap();
   var mock = void 0;
   if (typeof module === 'function') {
-    mock = mockFunction(module);
+    mock = mockFunction(module, cache);
   } else {
-    mock = mockObject(module, getObjectKeys(module));
+    mock = mockObject(module, getObjectKeys(module), cache);
   }
   return mock;
 }
