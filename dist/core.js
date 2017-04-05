@@ -4,7 +4,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.getObjectKeys = getObjectKeys;
 exports.getFunctionKeys = getFunctionKeys;
@@ -52,7 +52,7 @@ function mockFunction(fn, cache) {
 }
 
 function mockObject(obj, keys) {
-  var cache = arguments.length <= 2 || arguments[2] === undefined ? new WeakMap() : arguments[2];
+  var cache = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new WeakMap();
 
   var mock = {};
   keys.forEach(function (key) {
@@ -90,14 +90,14 @@ function mockModule(module) {
 }
 
 function mockModulePath(modulePath, context) {
-  var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
   var mock = options.mock != null ? options.mock : mockModule;
   return (0, _unwire.unwireWithContext)(modulePath, context, mock);
 }
 
 function replaceModulePath(modulePath, context) {
-  var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 
   var value = options.mock != null ? options.mock() : {};
   return (0, _unwire.replaceWithContext)(modulePath, context, value);
@@ -107,7 +107,7 @@ function mock(fn, context) {
   var modulePaths = new Set();
 
   var mock = function mock(modulePath) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     modulePaths.add(modulePath);
     if (options.replace) {
