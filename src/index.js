@@ -2,12 +2,12 @@ import caller from 'caller'
 import {mock} from './core'
 import {flushWithContext} from 'unwire'
 
-export default function stu (fn) {
+export default function stu (legacyFn) {
   const context = caller()
   let modulePaths = new Set()
 
   const exports = {
-    mock: () => {
+    mock: (fn = legacyFn) => {
       const result = mock(fn, context)
       modulePaths = new Set([...modulePaths, ...result.modulePaths])
       return result.returnValue
