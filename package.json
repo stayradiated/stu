@@ -1,6 +1,6 @@
 {
   "name": "stu",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Stub dependencies when testing",
   "main": "dist/index.js",
   "scripts": {
