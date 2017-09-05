@@ -41,12 +41,12 @@ describe('core', () => {
       }
       const keys = ['fn', 'string', 'number', 'bool', 'obj']
       const mocked = core.mockObject(obj, keys)
-      expect(mocked).toBeAn('object')
+      expect(typeof mocked).toBe('object')
       expect(mocked.fn.isSinonProxy).toBe(true)
       expect(mocked.string).toBe('string')
       expect(mocked.number).toBe(123)
       expect(mocked.bool).toBe(true)
-      expect(mocked.obj).toBeAn('object')
+      expect(typeof mocked.obj).toBe('object')
       expect(mocked.obj.fn2.isSinonProxy).toBe(true)
       expect(mocked.ignore).toBe(undefined)
     })
