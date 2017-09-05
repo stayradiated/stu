@@ -36,7 +36,7 @@
   "dependencies": {
     "caller": "^1.0.1",
     "sinon": "^3.2.1",
-    "unwire": "^2.4.0"
+    "unwire": "^3.0.0"
   },
   "babel": {
     "presets": [
