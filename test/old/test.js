@@ -1,6 +1,6 @@
-import assert from 'assert'
-import stu from '../../src/index'
-import {describe, it, beforeEach, after} from 'mocha'
+const assert = require('assert')
+const stu = require('../../src/index')
+const {describe, it, beforeEach, after} = require('mocha')
 
 describe('square', () => {
   let multiply
@@ -10,11 +10,11 @@ describe('square', () => {
   let abc
 
   const modules = stu((mock, test) => {
-    multiply = mock('./multiply').default
-    square = test('./square').default
+    multiply = mock('./multiply')
+    square = test('./square')
 
-    Car = mock('./car').default
-    drive = test('./drive').default
+    Car = mock('./car')
+    drive = test('./drive')
 
     abc = mock('./abc')
   })

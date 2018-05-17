@@ -1,5 +1,7 @@
-import multiply from './multiply'
+const multiply = require('./multiply')
 
-export default function square (n) {
+function square (n) {
   return multiply(n, n)
 }
+
+module.exports = square

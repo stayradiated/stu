@@ -1,3 +1,5 @@
-export const number = 1
-export const bool = true
-export const string = 'string'
+module.exports = {
+  number: 1,
+  bool: true,
+  string: 'string'
+}

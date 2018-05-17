@@ -1,6 +1,8 @@
-import Car from './car'
+const Car = require('./car')
 
-export default function drive () {
+function drive () {
   var car = new Car()
   return car.drive()
 }
+
+module.exports = drive

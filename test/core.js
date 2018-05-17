@@ -1,6 +1,6 @@
-import expect from 'expect'
+const expect = require('expect')
 
-import * as core from '../src/core'
+const core = require('../src/core')
 
 describe('core', () => {
   describe('getObjectKeys', () => {

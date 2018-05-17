@@ -1,25 +1,25 @@
-import sinon from 'sinon'
-import {
+const sinon = require('sinon')
+const {
   replaceWithContext,
   unwireWithContext,
   flushWithContext,
-} from 'unwire'
+} = require('unwire')
 
 const DEFAULT_FN_PROPS = [
   'length', 'name', 'arguments', 'caller', 'prototype',
 ]
 
-export function getObjectKeys (obj) {
+function getObjectKeys (obj) {
   return Object.getOwnPropertyNames(obj)
 }
 
-export function getFunctionKeys (fn) {
+function getFunctionKeys (fn) {
   return getObjectKeys(fn).filter((value) => {
     return DEFAULT_FN_PROPS.indexOf(value) < 0
   })
 }
 
-export function mockFunction (fn, cache) {
+function mockFunction (fn, cache) {
   const mock = Object.assign(
     sinon.stub(),
     mockObject(fn, getFunctionKeys(fn), cache))
@@ -36,7 +36,7 @@ export function mockFunction (fn, cache) {
   return mock
 }
 
-export function mockObject (obj, keys, cache = new WeakMap()) {
+function mockObject (obj, keys, cache = new WeakMap()) {
   const mock = {}
   keys.forEach((key) => {
     const val = obj[key]
@@ -61,7 +61,7 @@ export function mockObject (obj, keys, cache = new WeakMap()) {
   return mock
 }
 
-export function mockModule (module) {
+function mockModule (module) {
   const cache = new WeakMap()
   let mock
   if (typeof module === 'function') {
@@ -72,17 +72,17 @@ export function mockModule (module) {
   return mock
 }
 
-export function mockModulePath (modulePath, context, options = {}) {
+function mockModulePath (modulePath, context, options = {}) {
   const mock = options.mock != null ? options.mock : mockModule
   return unwireWithContext(modulePath, context, mock)
 }
 
-export function replaceModulePath (modulePath, context, options = {}) {
+function replaceModulePath (modulePath, context, options = {}) {
   const value = options.mock != null ? options.mock() : {}
   return replaceWithContext(modulePath, context, value)
 }
 
-export function mock (fn, context) {
+function mock (fn, context) {
   const modulePaths = new Set()
 
   const mock = function (modulePath, options = {}) {
@@ -104,6 +104,18 @@ export function mock (fn, context) {
   return {modulePaths, returnValue}
 }
 
-export function cleanup (modules, context) {
+function cleanup (modules, context) {
   modules.forEach((module) => flushWithContext(module, context))
+}
+
+module.exports = {
+  getObjectKeys,
+  getFunctionKeys,
+  mockFunction,
+  mockObject,
+  mockModule,
+  mockModulePath,
+  replaceModulePath,
+  mock,
+  cleanup
 }

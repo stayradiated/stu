@@ -1,8 +1,8 @@
-import caller from 'caller'
-import {mock} from './core'
-import {flushWithContext} from 'unwire'
+const caller = require('caller')
+const {mock} = require('./core')
+const {flushWithContext} = require('unwire')
 
-export default function stu (fn) {
+function stu (fn) {
   const context = caller()
   let modulePaths = new Set()
 
@@ -25,3 +25,5 @@ export default function stu (fn) {
 
   return exports
 }
+
+module.exports = stu
