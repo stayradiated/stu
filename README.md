@@ -22,7 +22,7 @@ test.beforeEach((t) => {
   t.context = {
     ...t.context,
     library: stu.mock('library'),
-    mycode: stu.test('../mycode')
+    mycode: stu.test('../mycode').default
   };
 })
 
