@@ -2,9 +2,10 @@
   "name": "stu",
   "version": "2.0.0",
   "description": "Stub dependencies when testing",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha --recursive -R spec test"
+    "build": "tsc",
+    "test": "ava-ts"
   },
   "repository": {
     "type": "git",
@@ -25,12 +26,18 @@
   },
   "homepage": "https://github.com/stayradiated/stu#readme",
   "devDependencies": {
-    "expect": "^22.4.3",
-    "mocha": "^5.1.1"
+    "@types/caller": "^1.0.0",
+    "@types/sinon": "^7.0.2",
+    "ava": "^1.0.1",
+    "ava-ts": "^0.25.2",
+    "expect": "^23.6.0",
+    "mocha": "^5.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
   },
   "dependencies": {
     "caller": "^1.0.1",
-    "sinon": "^5.0.7",
-    "unwire": "^4.0.1"
+    "sinon": "^7.2.2",
+    "unwire": "^6.0.0"
   }
 }

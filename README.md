@@ -15,24 +15,22 @@ npm install --save-dev stu
 ## Usage
 
 ``` javascript
-import stu from 'stu';
-import expect from 'expect';
+import test from 'ava';
+import * as stu from 'stu';
 
-describe('something', () => {
-  let library;
-  let mycode;
+test.beforeEach((t) => {
+  t.context = {
+    ...t.context,
+    library: stu.mock('library'),
+    mycode: stu.test('../mycode')
+  };
+})
 
-  stu((mock, test) => {
-    library = mock('library');
-    mycode = test('../mycode');
-  }).mocha();
+test('should do stuff with thing', (t) => {
+    const { library, mycode } = t.context;
 
-  it('should do stuff with thing', () => {
-    library.returns('some value');
-
-    mycode();
-
-    expect(library.args).toEqual([['a', 'b', 'c']]);
-  });
+  library.returns('some value');
+  mycode();
+  t.deepEqual(library.args, [['a', 'b', 'c']]);
 });
 ```
