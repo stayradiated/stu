@@ -8,8 +8,5 @@ test('should get any custom function keys', (t) => {
   fn.b = 2
   fn.c = 3
 
-  t.deepEqual(getFunctionKeys(fn), [
-    'a', 'b', 'c',
-  ])
+  t.deepEqual(getFunctionKeys(fn), ['a', 'b', 'c'])
 })
-

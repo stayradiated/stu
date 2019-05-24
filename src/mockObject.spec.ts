@@ -28,10 +28,10 @@ test('should mock all functions in an object', (t) => {
 
 test('should mock circular references', (t) => {
   class Circular {
-    self: Circular
-    name: string
+    public self: Circular
+    public name: string
 
-    constructor (name: string) {
+    public constructor (name: string) {
       this.self = this
       this.name = `Circular(${name})`
     }

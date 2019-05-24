@@ -7,7 +7,8 @@ import getObjectKeys from './getObjectKeys'
 const mockFunction = (fn: Function, cache: WeakMap<any, any>) => {
   const mock = Object.assign(
     sinon.stub(),
-    mockObject(fn, getFunctionKeys(fn), cache))
+    mockObject(fn, getFunctionKeys(fn), cache),
+  )
 
   if (fn.hasOwnProperty('prototype')) {
     const keys = getObjectKeys(fn.prototype)

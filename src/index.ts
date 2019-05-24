@@ -24,9 +24,4 @@ const flush = (modulePath: string) => {
   return flushWithContext(modulePath, context)
 }
 
-export {
-  mock,
-  overwrite,
-  test,
-  flush
-}
+export { mock, overwrite, test, flush }

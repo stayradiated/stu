@@ -1,10 +1,14 @@
 import mockFunction from './mockFunction'
 import getObjectKeys from './getObjectKeys'
 
-const mockObject = (obj: object, keys: Array<string>, cache = new WeakMap()): any => {
-  const mock = {}
+const mockObject = (
+  obj: Record<string, any>,
+  keys: string[],
+  cache = new WeakMap(),
+): any => {
+  const mock: Record<string, any> = {}
   keys.forEach((key) => {
-    const val = (<any>obj)[key]
+    const val = obj[key]
 
     let mockVal
     if (cache.has(val)) {
@@ -21,7 +25,7 @@ const mockObject = (obj: object, keys: Array<string>, cache = new WeakMap()): an
       mockVal = val
     }
 
-    (<any>mock)[key] = mockVal
+    mock[key] = mockVal
   })
   return mock
 }

@@ -1,5 +1,3 @@
-import sinon from 'sinon'
-
 import getObjectKeys from './getObjectKeys'
 import mockFunction from './mockFunction'
 import mockObject from './mockObject'
