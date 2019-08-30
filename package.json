@@ -29,13 +29,13 @@
   },
   "homepage": "https://github.com/stayradiated/stu#readme",
   "devDependencies": {
-    "@mishguru/package": "6.2.2",
+    "@mishguru/package": "7.8.0",
     "@types/caller": "^1.0.0",
-    "@types/sinon": "^7.0.11"
+    "@types/sinon": "^7.0.13"
   },
   "dependencies": {
     "caller": "^1.0.1",
-    "sinon": "^7.3.2",
+    "sinon": "^7.4.1",
     "unwire": "^6.1.0"
   }
 }
